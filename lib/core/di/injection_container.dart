@@ -1,9 +1,3 @@
-import 'package:admin_web/features/property_moderation/data/repository/property_moderation_repository_impl.dart';
-import 'package:admin_web/features/property_moderation/domin/repository/property_moderation_repository.dart';
-import 'package:admin_web/features/property_moderation/domin/usecase/approve_property.dart';
-import 'package:admin_web/features/property_moderation/domin/usecase/getPendingProperties.dart';
-import 'package:admin_web/features/property_moderation/domin/usecase/get_property_review_detail.dart';
-import 'package:admin_web/features/property_moderation/domin/usecase/reject_property.dart';
 import 'package:get_it/get_it.dart';
 
 import '../session/user_session.dart';
@@ -21,6 +15,17 @@ import '../../features/admin_dashboard/domain/repositories/admin_dashboard_repos
 import '../../features/admin_dashboard/domain/usecases/get_dashboard_overview.dart';
 import '../../features/admin_dashboard/presentation/cubit/admin_dashboard_cubit.dart';
 
+// ── property_moderation ──
+import '../../features/property_moderation/data/datasources/property_moderation_remote_data_source.dart';
+import '../../features/property_moderation/data/repositories/property_moderation_repository_impl.dart';
+import '../../features/property_moderation/domain/repositories/property_moderation_repository.dart';
+import '../../features/property_moderation/domain/usecases/approve_property.dart';
+import '../../features/property_moderation/domain/usecases/get_pending_properties.dart';
+import '../../features/property_moderation/domain/usecases/get_property_review_detail.dart';
+import '../../features/property_moderation/domain/usecases/reject_property.dart';
+import '../../features/property_moderation/presentation/cubit/property_moderation_cubit.dart';
+import '../../features/property_moderation/presentation/cubit/property_review_detail_cubit.dart';
+
 /// متغيّر GetIt العام — نفس الاسم والنمط المستخدم بمشروع الموبايل.
 final GetIt sl = GetIt.instance;
 
@@ -31,9 +36,9 @@ Future<void> init() async {
   // ── Features ──
   registerAuthFeatureDependencies();
   registerAdminDashboardFeatureDependencies();
+  registerPropertyModerationFeatureDependencies();
 
   // TODO: بالخطوات القادمة، أضف هون بنفس النمط:
-  registerPropertyModerationFeatureDependencies();
   // registerAllPropertiesFeatureDependencies();
   // registerUsersManagementFeatureDependencies();
   // registerAgentVerificationFeatureDependencies();
@@ -73,8 +78,19 @@ void registerAdminDashboardFeatureDependencies() {
   );
 }
 
-//property_moderation
 void registerPropertyModerationFeatureDependencies() {
+  // Presentation — Cubit منفصل للقائمة وآخر لتفاصيل المراجعة، كل واحد factory
+  sl.registerFactory<PropertyModerationCubit>(
+    () => PropertyModerationCubit(getPendingProperties: sl()),
+  );
+  sl.registerFactory<PropertyReviewDetailCubit>(
+    () => PropertyReviewDetailCubit(
+      getPropertyReviewDetail: sl(),
+      approveProperty: sl(),
+      rejectProperty: sl(),
+    ),
+  );
+
   // Domain
   sl.registerLazySingleton<GetPendingProperties>(
     () => GetPendingProperties(sl()),
@@ -82,20 +98,14 @@ void registerPropertyModerationFeatureDependencies() {
   sl.registerLazySingleton<GetPropertyReviewDetail>(
     () => GetPropertyReviewDetail(sl()),
   );
-  sl.registerLazySingleton<RejectProperty>(
-    () => RejectProperty(sl()),
-  );
-  sl.registerLazySingleton<ApproveProperty>(
-    () => ApproveProperty(sl()),
-  );
+  sl.registerLazySingleton<ApproveProperty>(() => ApproveProperty(sl()));
+  sl.registerLazySingleton<RejectProperty>(() => RejectProperty(sl()));
 
   // Data
   sl.registerLazySingleton<PropertyModerationRepository>(
     () => PropertyModerationRepositoryImpl(sl()),
   );
-
-  //presentation
-  sl.registerFactory<AdminDashboardCubit>(
-    () => AdminDashboardCubit(getDashboardOverview: sl()),
+  sl.registerLazySingleton<PropertyModerationRemoteDataSource>(
+    () => PropertyModerationRemoteDataSourceImpl(),
   );
 }

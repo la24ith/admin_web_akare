@@ -1,6 +1,6 @@
-import 'package:admin_web/features/property_moderation/domin/entities/property_moderation_entities.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../domain/entities/property_moderation_entities.dart';
 
 class AgentTrustCard extends StatelessWidget {
   final AgentTrustInfo agent;
@@ -124,8 +124,7 @@ class AgentTrustCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'هذا الوكيل غير موثّق بعد',
-                      style:
-                          TextStyle(fontSize: 12, color: AppColors.textPrimary),
+                      style: TextStyle(fontSize: 12, color: AppColors.textPrimary),
                     ),
                   ),
                 ],
@@ -143,8 +142,7 @@ class _TrustStat extends StatelessWidget {
   final int value;
   final Color color;
 
-  const _TrustStat(
-      {required this.label, required this.value, required this.color});
+  const _TrustStat({required this.label, required this.value, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -164,8 +162,7 @@ class _TrustStat extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
-            style:
-                const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+            style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
           ),
         ],
       ),

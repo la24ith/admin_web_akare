@@ -1,9 +1,9 @@
-import 'package:admin_web/core/error/failures.dart';
-import 'package:admin_web/features/property_moderation/data/datasource/property_moderation_remote_data_source.dart';
-import 'package:admin_web/features/property_moderation/domain/entities/property_moderation_entities.dart';
-import 'package:admin_web/features/property_moderation/domain/repositories/property_moderation_repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:postgrest/postgrest.dart';
+import '../../../../core/error/failures.dart';
+import '../../domain/entities/property_moderation_entities.dart';
+import '../../domain/repositories/property_moderation_repository.dart';
+import '../datasources/property_moderation_remote_data_source.dart';
 
 class PropertyModerationRepositoryImpl implements PropertyModerationRepository {
   final PropertyModerationRemoteDataSource remoteDataSource;

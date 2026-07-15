@@ -6,6 +6,7 @@ import '../widgets/admin_scaffold.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/admin_dashboard/presentation/screens/admin_dashboard_screen.dart';
 import '../../features/property_moderation/presentation/screens/property_moderation_screen.dart';
+import '../../features/property_moderation/presentation/screens/property_review_detail_screen.dart';
 import '../../features/all_properties/presentation/screens/all_properties_screen.dart';
 import '../../features/users_management/presentation/screens/users_management_screen.dart';
 import '../../features/agent_verification/presentation/screens/agent_verification_screen.dart';
@@ -70,8 +71,9 @@ class AppRouter {
               routes: [
                 GoRoute(
                   path: ':id/review',
-                  // TODO: تمرير id للـ Cubit عند بناء شاشة تفاصيل المراجعة
-                  builder: (context, state) => const PropertyModerationScreen(),
+                  builder: (context, state) => PropertyReviewDetailScreen(
+                    propertyId: state.pathParameters['id']!,
+                  ),
                 ),
               ],
             ),

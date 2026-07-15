@@ -1,15 +1,14 @@
-import 'package:admin_web/features/property_moderation/domin/entities/property_moderation_entities.dart';
-import 'package:admin_web/features/property_moderation/domin/usecase/approve_property.dart';
-import 'package:admin_web/features/property_moderation/domin/usecase/get_property_review_detail.dart';
-import 'package:admin_web/features/property_moderation/domin/usecase/reject_property.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/entities/property_moderation_entities.dart';
+import '../../domain/usecases/approve_property.dart';
+import '../../domain/usecases/get_property_review_detail.dart';
+import '../../domain/usecases/reject_property.dart';
 
 part 'property_review_detail_state.dart';
 
 class PropertyReviewDetailCubit extends Cubit<PropertyReviewDetailState> {
   final GetPropertyReviewDetail getPropertyReviewDetail;
-
   final ApproveProperty approveProperty;
   final RejectProperty rejectProperty;
 
@@ -22,8 +21,8 @@ class PropertyReviewDetailCubit extends Cubit<PropertyReviewDetailState> {
   Future<void> loadDetail(String propertyId) async {
     emit(const PropertyReviewLoading());
 
-    final result = await getPropertyReviewDetail(
-        GetPropertyReviewDetailParams(propertyId));
+    final result =
+        await getPropertyReviewDetail(GetPropertyReviewDetailParams(propertyId));
 
     result.fold(
       (failure) => emit(PropertyReviewError(failure.message)),

@@ -1,4 +1,4 @@
-import 'package:admin_web/features/property_moderation/domin/entities/property_moderation_entities.dart';
+import '../../domain/entities/property_moderation_entities.dart';
 
 class PropertyQueueItemModel extends PropertyQueueItem {
   const PropertyQueueItemModel({
@@ -99,9 +99,9 @@ class PropertyReviewDetailModel extends PropertyReviewDetail {
     final agentUser = agent?['users'] as Map<String, dynamic>?;
     final images = (row['property_images'] as List?) ?? const [];
 
-    final sortedImages = [...images]..sort((a, b) =>
-        ((a['sort_order'] as int?) ?? 0)
-            .compareTo((b['sort_order'] as int?) ?? 0));
+    final sortedImages = [...images]
+      ..sort((a, b) =>
+          ((a['sort_order'] as int?) ?? 0).compareTo((b['sort_order'] as int?) ?? 0));
 
     return PropertyReviewDetailModel(
       id: row['id'] as String,
