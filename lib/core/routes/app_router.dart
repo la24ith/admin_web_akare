@@ -82,6 +82,14 @@ class AppRouter {
             GoRoute(
               path: '/admin/properties',
               builder: (context, state) => const AllPropertiesScreen(),
+              routes: [
+                GoRoute(
+                  path: ':id/review',
+                  builder: (context, state) => PropertyReviewDetailScreen(
+                    propertyId: state.pathParameters['id']!,
+                  ),
+                ),
+              ],
             ),
           ]),
           StatefulShellBranch(routes: [
